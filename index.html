@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        *{
+            font-weight: 600;
+            
+        }
+           #bar{
+              /* border: 2px solid rgb(221, 34, 34); */
+              height:100%;
+              width: 25%;
+            font
+              /* justify-content: space-between;
+              display: flex; */
+              margin: 0px;
+              justify-content: space-between;
+              box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+             
+           }
+           #bar_var {
+                /* border: 2px rgb(15, 10, 10); */
+              
+                width: 90%;
+                display: flex;
+                margin: auto;
+                justify-content: space-between;
+                /* border: 2px solid black; */
+                
+            }
+        label {
+            display: block;
+            margin-bottom: 0px;
+            margin-top: 15px;
+        }
+    
+        .my-button{
+            
+    width: 100%;
+    background-color: #3c66cf; /* Background color */
+    color: white; /* Text color */
+    border: none; /* Remove button border */
+    padding: 10px ; /* Padding inside the button */
+    text-align: center; /* Center-align text */
+    text-decoration: none; /* Remove underlines */
+    display: inline-block;
+    font-size: 16px; /* Font size */
+    margin: 15px 15px 15px 2px; /* Margin around the button */
+    cursor: pointer; /* Cursor style on hover */
+    border-radius: 18px; /* Rounded corners */
+    justify-content: space-evenly;
+        }
+    .my-button:hover {
+    background-color: #bf4c2f; /* Darker green color on hover */
+}
+        
+        .space{
+            justify-content: space-between;
+            width: 292px;
+            height: 20px;
+        }
+        table {
+             width: 70%;
+             height: 80px
+          border-collapse:collapse;
+            margin:30px;
+            background-color: lightgreen;
+          
+        }
+        thead{
+            
+            height: 30px;
+        }
+        .deleteBtn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+    
+    </style>
+</head>
+<body>
+<div id="bar">
+    <div id="bar_var">
+<form id="doctorForm">
+    <label for="name"> Doctor Name:</label>
+    <input class="space" type="text" id="name" name="name" required><br>
+
+    <label for="doctorId">Doctor ID:</label>
+    <input  class="space" type="text" id="doctorId" name="doctorId" required><br>
+
+    <label for="specialization">Specialization:</label>
+    <select id="specialization" name="specialization" required>
+        <option value="ENT">ENT</option>
+        <option value="Cardiology">Cardiology</option>
+       
+    </select><br>
+
+    <label for="experience">Experience (in years):</label>
+    <input  class="space" type="number" id="experience" name="experience" required><br>
+
+    <label for="email">Email address:</label>
+    <input  class="space" type="email" id="email" name="email" required><br>
+
+    <label for="mobile">Mobile Number:</label>
+    <input  class="space" type="tel" id="mobile" name="mobile" required><br>
+
+    <input  class="my-button" type="submit" value="Submit">
+</form>
+</div>
+</div>
+
+
+<table border="1">
+    <thead>
+        <tr >
+            <th>Name</th>
+            <th>Doctor ID</th>
+            <th>Specialization</th>
+            <th>Experience in years</th>
+            <th>Email address</th>
+            <th>Mobile Number</th>
+            <th>Role</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody id="doctorTableBody"></tbody>
+</table>
+
+<script>
+   
+    $(document).ready(function() {
+        $("#doctorForm").submit(function(e) {
+            e.preventDefault();
+
+            var name = $("#name").val();
+            var doctorId = $("#doctorId").val();
+            var specialization = $("#specialization").val();
+            var experience = $("#experience").val();
+            var email = $("#email").val();
+            var mobile = $("#mobile").val();
+            var role = getRole(experience);
+
+            var row = "<tr><td>" + name + "</td><td>" + doctorId + "</td><td>" + specialization + "</td><td>" +
+                      experience + "</td><td>" + email + "</td><td>" + mobile + "</td><td>" + role +
+                      "</td><td><button class='deleteBtn'>Delete</button></td></tr>";
+
+            $("#doctorTableBody").append(row);
+            $("#doctorForm")[0].reset(); // Clear the form
+
+            $(".deleteBtn").click(function() {
+                $(this).closest("tr").remove();
+            });
+        });
+
+        $("#filter").change(function() {
+            var selectedSpecialization = $(this).val();
+            if (selectedSpecialization === "all") {
+                $("tbody tr").show();
+            } else {
+                $("tbody tr").hide();
+                $("tbody tr:contains('" + selectedSpecialization + "')").show();
+            }
+        });
+
+        function getRole(experience) {
+            if (experience > 5) {
+                return "Senior";
+            } else if (experience >= 2 && experience <= 5) {
+                return "Junior";
+            } else {
+                return "Trainee";
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
